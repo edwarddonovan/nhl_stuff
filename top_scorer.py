@@ -47,7 +47,7 @@ def get_player_stats(player_ids, year_input):
 		except: continue
 	return player_stats
 
-def get_top_scorer(player_stats):
+def get_top_scorer(player_stats, year_input):
 	max_points = max(player_stats, key=lambda x:x['points'])
 	for dict_items in player_stats:
 		for key, value in dict_items.items():
@@ -55,6 +55,10 @@ def get_top_scorer(player_stats):
 				response = requests.get(API_URL + '/people/' + str(max_points['player_id']))
 				data = response.json()
 				print(data['people'][0]['fullName'] + " leads the team with " + str(max_points['goals']) + " goals and " + str(max_points['assists']) + " assists, for " + str(max_points['points']) + " points")
+				response = requests.get(API_URL + '/people/' + str(max_points['player_id']) + '/stats?stats=regularSeasonStatRankings&season=' + str(year_input))
+				data = response.json()
+				rank = data['stats'][0]['splits'][0]['stat']['rankPoints']
+				print("Which puts them " + rank + " in the NHL")
 
 
 
@@ -63,9 +67,9 @@ def get_top_scorer(player_stats):
 year_input = '20222023' #init year input as current season because it is annoying to type
 
 user_input = input("Please enter a team name to recieve info on their leading scorer: ").lower()
-year_input = input("Please enter years of the season as YYYYYYYY - leave blank for 2022/2023 season: ")
+#year_input = input("Please enter years of the season as YYYYYYYY - leave blank for 2022/2023 season: ") #this is broken because i am using current team rosters instead of team id
 
 team_id = get_team(user_input)
 player_ids = get_players(team_id)
 player_stats = get_player_stats(player_ids,year_input)
-get_top_scorer(player_stats)
+get_top_scorer(player_stats,year_input)
