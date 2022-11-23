@@ -1,5 +1,6 @@
 import requests
 import json 
+from unidecode import unidecode
 
 
 class TopScorer:
@@ -18,7 +19,7 @@ class TopScorer:
 		#get team id from user input
 		team_id = 0
 		for team in data['teams']:
-			if team['name'].lower() == self.user_input:
+			if unidecode(team['name'].lower()) == self.user_input.lower():
 				print(team['name'])
 				team_id = team['id']
 		if team_id > 0:
