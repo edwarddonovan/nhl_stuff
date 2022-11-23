@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Leading Scorer{% endblock %}
+
+{% block content %} 
+<h1 align="center">Leading Scorer </h1>
+<h3 align="center">{{ player }}</h3>
+<br />
+<button type="button" class="btn btn-primary" onclick="window.location.href='{{ url_for( 'views.home' ) }}';">Try another team</button>
+{% endblock %}

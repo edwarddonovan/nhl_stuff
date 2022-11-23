@@ -1,12 +1,13 @@
 import requests
 import json 
 
+
 class TopScorer:
 	#declare API URL as class attribute
 	API_URL = 'https://statsapi.web.nhl.com/api/v1'
 
-	def __init__(self):
-		self.user_input = input("Please enter a team name to recieve info on their leading scorer: ").lower()
+	def __init__(self, team_name):
+		self.user_input = team_name
 		self.year_input = '20222023' #init year input as current season because it is annoying to type
 
 	def get_team(self):
@@ -63,21 +64,23 @@ class TopScorer:
 				if value == max_points['points']:
 					response = requests.get(TopScorer.API_URL + '/people/' + str(max_points['player_id']))
 					data = response.json()
-					print(data['people'][0]['fullName'] + " leads the team with " + str(max_points['goals']) + " goals and " + str(max_points['assists']) + " assists, for " + str(max_points['points']) + " points")
+					line_1 = (data['people'][0]['fullName'] + " leads the team with " + str(max_points['goals']) + " goals and " + str(max_points['assists']) + " assists, for " + str(max_points['points']) + " points")
 					response = requests.get(TopScorer.API_URL + '/people/' + str(max_points['player_id']) + '/stats?stats=regularSeasonStatRankings&season=' + str(self.year_input))
 					data = response.json()
 					rank = data['stats'][0]['splits'][0]['stat']['rankPoints']
-					print("Which puts them " + rank + " in the NHL")
+					line_2 = (", which puts them " + rank + " in the NHL")
 
+					return line_1 + '\n' + line_2
 
-while True:
-	try:
-		team = TopScorer()
-		team.get_team()
-		team.get_players()
-		team.get_player_stats()
-		team.get_top_scorer()
-	except:
-		pass
-	else:
-		break
+def main(team_name):
+	while True:
+		try:
+			team = TopScorer(team_name)
+			team.get_team()
+			team.get_players()
+			team.get_player_stats()
+			return team.get_top_scorer()
+		except:
+			return "Please enter a valid team name (City and Team)"
+		else:
+			return "Please enter a valid team name (City and Team)"

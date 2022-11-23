@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Leading Scorer{% endblock %}
+
+{% block content %} 
+<h1 align="center">Check an NHL team's 2022-2023 leading scorer </h1>
+<form method ="POST">
+	<h3 align="center">Enter a Team</h3>
+	<div class ="form-group">
+		<label for='team'>Team</label>
+		<input 
+			type="team" 
+			class ="form-control" 
+			id="team" 
+			name="team" 
+			placeholder="city and team name"
+		/>
+	</div>
+	<br />
+	<button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}
